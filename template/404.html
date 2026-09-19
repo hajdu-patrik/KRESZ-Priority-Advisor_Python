@@ -1,21 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Page Not Found</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-</head>
-<body>
-    <button id="theme-toggle" class="theme-toggle">💡</button>
+{% extends 'base.html' %}
+{% block title %}404 - Page Not Found{% endblock %}
+{% block description %}Az oldal nem található. Vissza a kezdőlapra a KRESZ 28.§ elsőbbségadás elemzéséhez.{% endblock %}
+{% block robots %}noindex, follow{% endblock %}
+{% block canonical %}{% endblock %}
+{% block content %}
     <div class="container text-center">
         <h1 class="error-title">404</h1>
         <h2>Az oldal nem található (HIBA)</h2>
         <p>Átirányítás a kezdőlapra <span id="countdown">5</span> másodperc múlva...</p>
-        <a href="/" class="back-link">&laquo; Vissza a kezdőlapra</a>
+        {{ ui.link_button('/', '« Vissza a kezdőlapra') }}
     </div>
-
-    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
-</body>
-</html>
+{% endblock %}

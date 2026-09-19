@@ -1,15 +1,5 @@
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KRESZ 28.§ Tanácsadó</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
-</head>
-<body>
-    <button id="theme-toggle" class="theme-toggle">💡</button>
-
+{% extends 'base.html' %}
+{% block content %}
     <div class="container">
         <h1>🚗 KRESZ 28.§: Elsőbbségadás</h1>
         <p class="text-center">Kérlek, add meg a járművek és az út adatait!</p>
@@ -88,7 +78,7 @@
                 </div>
             </div>
 
-            <input type="submit" value="Helyzet Elemzése" class="btn btn-submit">
+            {{ ui.submit_button('Helyzet Elemzése', 'btn-submit') }}
         </form>
 
         {% if result %}
@@ -98,7 +88,4 @@
         </div>
         {% endif %}
     </div>
-
-    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
-</body>
-</html>
+{% endblock %}

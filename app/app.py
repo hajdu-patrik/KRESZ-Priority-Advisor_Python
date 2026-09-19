@@ -1,6 +1,6 @@
 import os
 import sys
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, Response
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -18,6 +18,17 @@ except ImportError as e:
     print(f"ERROR: Failed to import the business_logic module: {e}")
 
 app = Flask(__name__, template_folder=TEMPLATE_DIR, static_folder=STATIC_DIR)
+
+# --- Site Identity ---
+# Absolute base URL of the deployment, used for canonical links, social tags, robots and the sitemap.
+SITE_URL = os.environ.get('SITE_URL', 'https://kresz-priority-advisor-system.vercel.app').rstrip('/')
+
+
+@app.context_processor
+def inject_site_urls():
+    """Expose the site and the current canonical URL to every template."""
+    return {'site_url': SITE_URL, 'canonical_url': SITE_URL + request.path}
+
 
 
 # --- Web Routes ---
@@ -52,6 +63,21 @@ def index():
     return render_template('index.html', result=result_text, form=form_data)
 
 # --- 404 Error Handler ---
+# --- Crawler Routes ---
+@app.route('/robots.txt')
+def robots_txt():
+    # Everything is public; point crawlers at the sitemap.
+    body = 'User-agent: *\nAllow: /\nSitemap: ' + SITE_URL + '/sitemap.xml\n'
+    return Response(body, mimetype='text/plain')
+
+
+@app.route('/sitemap.xml')
+def sitemap_xml():
+    urls = ''.join('  <url><loc>' + SITE_URL + path + '</loc></url>\n' for path in ['/'])
+    body = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + '</urlset>\n'
+    return Response(body, mimetype='application/xml')
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404

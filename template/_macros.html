@@ -1,0 +1,16 @@
+{#
+  Újrahasznosítható vezérlők. A CSS osztályok a style.css meglévő szabályai:
+  .theme-toggle, .btn (+ .btn-submit módosító), .back-link
+#}
+
+{% macro theme_toggle() -%}
+<button id="theme-toggle" class="theme-toggle" type="button">💡</button>
+{%- endmacro %}
+
+{% macro submit_button(value, modifier='') -%}
+<input type="submit" value="{{ value }}" class="btn{% if modifier %} {{ modifier }}{% endif %}">
+{%- endmacro %}
+
+{% macro link_button(href, text, css_class='back-link') -%}
+<a href="{{ href }}" class="{{ css_class }}">{{ text }}</a>
+{%- endmacro %}
