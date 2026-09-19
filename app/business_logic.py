@@ -198,11 +198,20 @@ def calculate_priority(vehicle_a_data, vehicle_b_data):
         onto.destroy()
         return "✅ NEKED VAN ELSŐBBSÉGED! (Megkülönböztető jelzést használsz)"
 
-    # 2. Sign-based decision (Checking SWRL inference results)
+    # 2. Sign-based decision (Priority Level 2)
+    # Ranking the signs: priority road > no sign > STOP / Yield.
     # Exception: If both have STOP/Yield, they are equal in rank relative to each other!
+    # The SWRL inference (yieldsTo) alone is not enough here: it stays empty when the reasoner has no Java runtime
+    # (e.g. on Vercel), and the right-hand / tram rules fire regardless of the signs.
+    sign_rank = {'priority': 2, 'none': 1, 'stop': 0, 'yield': 0}
+    rank_a = sign_rank.get(sign_a, 1)
+    rank_b = sign_rank.get(sign_b, 1)
     both_subordinate = (sign_a in ['stop', 'yield']) and (sign_b in ['stop', 'yield'])
-    
-    if v_b in v_a.yieldsTo and not both_subordinate:
+
+    if rank_a > rank_b:
+        onto.destroy()
+        return "✅ NEKED VAN ELSŐBBSÉGED (vagy a másik járműnek táblája van)."
+    if rank_a < rank_b:
         onto.destroy()
         return "⚠️ ELSŐBBSÉGET KELL ADNOD! (Tábla szabályozás)"
 
