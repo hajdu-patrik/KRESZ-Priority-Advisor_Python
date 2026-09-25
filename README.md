@@ -1,3 +1,5 @@
+# KRESZ Priority Advisor System
+
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat&logo=python&logoColor=white)
 ![Flask](https://img.shields.io/badge/Framework-Flask-000000?style=flat&logo=flask&logoColor=white)
 ![Owlready2](https://img.shields.io/badge/Semantic_Web-Owlready2-A42E2B?style=flat&logo=python&logoColor=white)
@@ -7,7 +9,7 @@
 ![CSS3](https://img.shields.io/badge/Style-CSS3-1572B6?style=flat&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/Script-JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
 ![Status](https://img.shields.io/badge/Status-Educational_Project-brightgreen?style=flat)
-# KRESZ Priority Advisor System
+![License](https://img.shields.io/badge/License-All_Rights_Reserved-red?style=flat)
 
 A Semantic Web-based decision support system that models the **Hungarian Highway Code (KRESZ) Section 28** regarding Priority at Intersections. The project was developed as part of the **BME-VIK "Natural Language and Semantic Technologies"** course.
 
@@ -22,7 +24,7 @@ The system determines the right-of-way between two vehicles using a hybrid reaso
 
 ---
 
-## 📚 Features
+## ✨ Features
 
 - 🚦 **Traffic Situation Modeling** – dynamic creation of ABox individuals (Vehicles, Roads, Signs) based on user input.
 - 🧠 **Semantic Reasoning** – uses the **Pellet reasoner** to infer priority relationships (`yieldsTo`) based on defined SWRL rules.
@@ -38,7 +40,7 @@ The system determines the right-of-way between two vehicles using a hybrid reaso
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Technology Stack
 
 - **Backend:** Python 3.10+
 - **Web Server:** Flask
@@ -79,7 +81,7 @@ KRESZ_Priority_Advisor_System/
 The system creates an in-memory ontology (`http://test.org/kresz_full.owl`) for every request to ensure a stateless calculation.
 
 1. **TBox (Terminology)**
-    - **Classes:** `Vehicle` (Subclasses: `Tram`, `EmergencyVehicle`), `Road` (Subclasses: `PavedRoad`, `DirtRoad`), `TrafficSign` (`StopSign`, `PrioritySignv, etc.).
+    - **Classes:** `Vehicle` (Subclasses: `Tram`, `EmergencyVehicle`), `Road` (Subclasses: `PavedRoad`, `DirtRoad`), `TrafficSign` (`StopSign`, `PrioritySign`, etc.).
     - **Properties** `locatedOn` (Vehicle $\to$ Road), `hasSign` (Road $\to$ Sign), `isRightOf` (Spatial relation).
 2. **Reasoning (SWRL & Python)**
 The logic follows a strict hierarchy:
@@ -124,8 +126,8 @@ The system dynamically evaluates any user-defined scenario. Below are specific t
 ### 1. Clone the Repository
 
 ```bash
-git clone [https://github.com/hajdu-patrik/KRESZ-Priority-Advisor-System_OWL]
-cd your-repo-name
+git clone https://github.com/hajdu-patrik/KRESZ-Priority-Advisor_Python.git
+cd KRESZ-Priority-Advisor_Python
 ```
 
 ### 2. Create and Activate Virtual Environment
@@ -133,7 +135,7 @@ cd your-repo-name
 **Windows (Git Bash):**
 ```bash
 python -m venv .venv
-source .venv/Scripts/activate"
+source .venv/Scripts/activate
 ```
 
 **macOS/Linux:**
@@ -196,3 +198,11 @@ Any push to the `main` branch automatically triggers a new build and deployment.
 | Environment | Status |
 | :--- | :--- |
 | **Production** | [![Vercel App](https://img.shields.io/badge/Visit-Live_App-success?style=for-the-badge&logo=vercel)](https://kresz-priority-advisor-system.vercel.app) |
+
+---
+
+## 📄 License
+
+Copyright (c) Hajdú Patrik Zsolt. All rights reserved.
+
+Published for demonstration and portfolio purposes only. Using any part of this code as a solution for an academic assignment is strictly prohibited. See [LICENSE.md](LICENSE.md) for the full terms.
