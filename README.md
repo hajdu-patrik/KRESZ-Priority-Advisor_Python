@@ -4,7 +4,7 @@
 ![Flask](https://img.shields.io/badge/Framework-Flask-000000?style=flat&logo=flask&logoColor=white)
 ![Owlready2](https://img.shields.io/badge/Semantic_Web-Owlready2-A42E2B?style=flat&logo=python&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Deployment-Vercel-000000?style=flat&logo=vercel&logoColor=white)
-![SWRL](https://img.shields.io/badge/Logic-SWRL%20%26%20Pellet-4B0082?style=flat)
+![SWRL](https://img.shields.io/badge/Logic-SWRL%20%26%20HermiT-4B0082?style=flat)
 ![HTML5](https://img.shields.io/badge/Frontend-HTML5-E34F26?style=flat&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/Style-CSS3-1572B6?style=flat&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/Script-JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
@@ -27,7 +27,7 @@ The system determines the right-of-way between two vehicles using a hybrid reaso
 ## ✨ Features
 
 - 🚦 **Traffic Situation Modeling** – dynamic creation of ABox individuals (Vehicles, Roads, Signs) based on user input.
-- 🧠 **Semantic Reasoning** – uses the **Pellet reasoner** to infer priority relationships (`yieldsTo`) based on defined SWRL rules.
+- 🧠 **Semantic Reasoning** – uses the **HermiT reasoner** (Owlready2's default `sync_reasoner()`) to infer priority relationships (`yieldsTo`) based on defined SWRL rules.
 - 📜 **Complex Rule Handling** – implements the hierarchy of KRESZ § 28:
     - *Emergency Vehicles*
     - *Road Surface (Paved vs. Dirt)*
@@ -46,43 +46,47 @@ The system determines the right-of-way between two vehicles using a hybrid reaso
 - **Web Server:** Flask
 - **Semantic Web:**
     - **Owlready2:** For Ontology manipulation and SWRL rule integration.
-    - **Pellet:** For consistency checking and inference.
+    - **HermiT:** For consistency checking and inference.
 - **Frontend:** HTML5, CSS3, JavaScript
 
 ---
 
 ## 📂 Project Structure
 ```
-KRESZ_Priority_Advisor_System/
+KRESZ-Priority-Advisor_Python/
 ├── app/
+│   ├── app.py
 │   ├── business_logic.py
-│   ├── generate_ontology.py
-│   └── app.py
-│
-├── requirements.txt
-│
-├── static/
-│   ├── style.css
-│   ├── scripts.js
-│   └── icon.ico
+│   └── generate_ontology.py
 │
 ├── model/
 │   └── kresz_model.owl
 │
-└── template/
-    ├── index.html
-    └── 404.html
+├── static/
+│   ├── favicon.ico
+│   ├── icon-256.png
+│   ├── scripts.js
+│   └── style.css
+│
+├── template/
+│   ├── 404.html
+│   ├── _macros.html
+│   ├── base.html
+│   └── index.html
+│
+├── requirements.txt
+└── vercel.json
 ```
 
 ---
 
 ## 🧠 Ontology & Logic
 
-The system creates an in-memory ontology (`http://test.org/kresz_full.owl`) for every request to ensure a stateless calculation.
+The system creates a new in-memory ontology with a unique IRI (`http://test.org/kresz_<uuid>.owl`) for every request to ensure a stateless calculation.
 
 1. **TBox (Terminology)**
     - **Classes:** `Vehicle` (Subclasses: `Tram`, `EmergencyVehicle`), `Road` (Subclasses: `PavedRoad`, `DirtRoad`), `TrafficSign` (`StopSign`, `PrioritySign`, etc.).
-    - **Properties** `locatedOn` (Vehicle $\to$ Road), `hasSign` (Road $\to$ Sign), `isRightOf` (Spatial relation).
+    - **Properties:** `locatedOn` (Vehicle $\to$ Road), `hasSign` (Road $\to$ Sign), `isRightOf` (Spatial relation).
 2. **Reasoning (SWRL & Python)**
 The logic follows a strict hierarchy:
     1. **Emergency Vehicles:** Always take precedence (unless meeting another emergency vehicle).
@@ -114,7 +118,7 @@ The system dynamically evaluates any user-defined scenario. Below are specific t
     - *Input:* Equal intersection (both Paved, no Signs), Other is a Tram coming from Left.
     - *Rule:* `Tram(?v2) ^ ... -> yieldsTo(?v1, ?v2)`
     - *Result:* **User yields.**
-4. **Emergency Vehicle Priority:**
+4. **Right-hand Rule (Equal Situation):**
     - *Input:* Equal intersection, Other vehicle coming from Right.
     - *Rule:* `isRightOf(?v2, ?v1) -> yieldsTo(?v1, ?v2)`
     - *Result:* **User yields.**
@@ -147,7 +151,7 @@ source .venv/bin/activate
 ### 3. Install Dependencies
 
 ```bash
-pip install -r import/requirements.txt
+pip install -r requirements.txt
 ```
 
 ### 4. Generate Static Ontology Model
